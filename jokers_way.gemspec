@@ -21,14 +21,14 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_runtime_dependency 'activesupport', '~> 7.0.4'
+  s.add_runtime_dependency 'pry', '~> 0.14.2'
+  s.add_runtime_dependency 'pry-byebug', '~> 3.10.1'
 
   s.add_development_dependency 'bundler', '~> 2.0'
   s.add_development_dependency 'factory_bot', '~> 6.2.1'
-  s.add_development_dependency 'pry', '~> 0.14.1'
-  s.add_development_dependency 'pry-byebug', '~> 3.10.1'
   s.add_development_dependency 'rspec-core', '~> 3.12.0'
   s.add_development_dependency 'rspec-expectations', '~> 3.12.0'
   s.add_development_dependency 'rspec-mocks', '~> 3.12.0'
   s.add_development_dependency 'securerandom'
-  s.required_ruby_version = '>= 3.3.0.rc1'
+  s.required_ruby_version = '>= 3.3.0'
 end

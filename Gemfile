@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in follow_the_joker.gemspec
+# Specify your gem's dependencies in jokers_way.gemspec
 gemspec
 
 gem 'rake', '~> 13.0'
