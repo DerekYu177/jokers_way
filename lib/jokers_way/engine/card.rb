@@ -21,12 +21,26 @@ module JokersWay
       SUIT_CARD_RANKS   = NUMBER_CARD_RANKS + FACE_CARD_RANKS
       JOKER_CARD_RANKS  = [LITTLE_JOKER_RANK, BIG_JOKER_RANK].freeze
 
+      class << self
+        def pop!(cards, rank:, suit: nil)
+          card = cards.find { |card| card.suit == suit && card.rank == rank }
+
+          raise CardNotFoundInHand unless card
+
+          cards.delete_at(cards.index(card))
+        end
+      end
+
       def initialize(rank, suit: nil)
         @rank = rank
         @suit = suit
 
         @current_rank = rank
         @current_suit = suit
+      end
+
+      def joker?
+        JOKER_CARD_RANKS.include?(current_rank)
       end
     end
   end

@@ -36,7 +36,7 @@ module JokersWay
           raise "unknown action: #{action}"
         end
 
-        @play.complete_turn
+        @play.new_play! if @play.complete?
       end
 
       def finished?
@@ -54,11 +54,10 @@ module JokersWay
 
       private
 
-      def play(...); end
+      def play(...)
+      end
 
       def skip(id, *, **)
-        raise CannotSkipError if @play.first?
-
         @play.skip(id)
       end
     end

@@ -14,5 +14,6 @@ module JokersWay
     # runs game
 
     class CannotSkipError < StandardError; end
+    class CardNotFoundInHand < StandardError; end
   end
 end

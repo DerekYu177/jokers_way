@@ -46,6 +46,10 @@ module JokersWay
         @round = Round.new(players: @players, state: @state)
       end
 
+      def find_player(id)
+        @players.find { |p| p.id == id }
+      end
+
       def turn(...)
         @round.turn(...)
 

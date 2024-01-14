@@ -20,26 +20,36 @@ module JokersWay
         @current_player = table.keys.first
       end
 
-      def first?
-        @table.values.all?(&:blank?)
+      def play(player, cards:)
+        @table[player] = :play # should be more than this
+        complete_turn
       end
 
       def skip(player)
+        raise CannotSkipError if first_play?
+
         @table[player] = :skip
-
-        return unless @table.values.all?(&:present?)
-
-        new_play!
+        complete_turn
       end
+
+      def complete?
+        @table.values.none?(&:nil?)
+      end
+
+      private
 
       def new_play!
         @table.each_key { |id| @table[id] = nil }
       end
 
+      def first_play?
+        @table.values.all?(&:nil?)
+      end
+
       def complete_turn
-        current_player_index = table.find_index(current_player)
+        current_player_index = @table.keys.find_index(current_player)
         current_player_index = (current_player_index + 1) % 5
-        @current_player = table.keys[current_player_index]
+        @current_player = @table.keys[current_player_index]
       end
     end
   end
