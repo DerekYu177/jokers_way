@@ -8,6 +8,9 @@ require_relative 'engine/state'
 require_relative 'engine/card'
 require_relative 'engine/round_conclusion'
 require_relative 'engine/play'
+require_relative 'engine/move'
+require_relative 'engine/one_to_three_card_move'
+require_relative 'engine/five_card_move'
 
 module JokersWay
   module Engine
@@ -15,5 +18,15 @@ module JokersWay
 
     class CannotSkipError < StandardError; end
     class CardNotFoundInHand < StandardError; end
+
+    class AbstractMoveError < StandardError
+      def initialize(previous, current)
+        @previous = previous
+        @current = current
+      end
+    end
+
+    class HandSizeMismatchError < AbstractMoveError; end
+    class UnequalRanksError < AbstractMoveError; end
   end
 end

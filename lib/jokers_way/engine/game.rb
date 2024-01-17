@@ -50,6 +50,10 @@ module JokersWay
         @players.find { |p| p.id == id }
       end
 
+      def current_player
+        @round.play.current_player
+      end
+
       def turn(...)
         @round.turn(...)
 

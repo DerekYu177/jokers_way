@@ -35,6 +35,18 @@ RSpec.describe(JokersWay::Engine::Game) do
     end
 
     describe '#turn' do
+      context 'when plays a card' do
+        it 'plays the card and removes it from the hand of the player' do
+          game # initialize
+          current_player = game.find_player(game.current_player)
+          card_to_play = current_player.cards.first 
+
+          game.turn(id: game.current_player, action: :play, cards: [card_to_play])
+
+          expect(current_player.cards.find(card_to_play)).to(be_nil)
+        end
+      end
+
       context 'when finished?' do
         before do
           expect_any_instance_of(JokersWay::Engine::Round).to(receive(:finished?).and_return(true))

@@ -100,7 +100,7 @@ module JokersWay
       end
 
       def current_player
-        @game.round.instance_variable_get(:@play).current_player
+        @game.current_player
       end
     end
   end

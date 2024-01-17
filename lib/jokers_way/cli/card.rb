@@ -22,7 +22,7 @@ module JokersWay
         private
 
         def split(shorthand)
-          rank = shorthand.match(/.\d/).to_s
+          rank = shorthand.match(/\d+/).to_s
           suit = shorthand.delete(rank) 
 
           suit = case suit

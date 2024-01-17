@@ -7,7 +7,7 @@ module JokersWay
       # a round is comprised of multiple plays
       # a play is concluded where each player has made a move (skip | play a card)
 
-      attr_reader :state
+      attr_reader :state, :play
       attr_accessor :succeeded, :jailed
 
       def initialize(players:, state:)
@@ -29,7 +29,7 @@ module JokersWay
       def turn(id:, action:, **kwargs)
         case action
         when :play
-          play(id, cards: [*kwargs.delete(:cards)])
+          play_cards(id, cards: [*kwargs.delete(:cards)])
         when :skip
           skip(id)
         else
@@ -54,7 +54,15 @@ module JokersWay
 
       private
 
-      def play(...)
+      def play_cards(id, cards:)
+        # first, make sure that the cards that are played are valid
+        @play.play_cards(id, cards: cards)
+
+        # ensure that cards 
+        # are popped from the hand
+        # this may seem excessive 
+        # because we already did it when we fetched the hand, 
+        # but this would be where the hand is accepted
       end
 
       def skip(id, *, **)

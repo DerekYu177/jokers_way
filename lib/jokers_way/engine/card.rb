@@ -40,7 +40,7 @@ module JokersWay
       end
 
       def joker?
-        JOKER_CARD_RANKS.include?(current_rank)
+        JOKER_CARD_RANKS.include?(rank)
       end
     end
   end
