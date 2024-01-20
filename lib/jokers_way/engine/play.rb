@@ -22,7 +22,7 @@ module JokersWay
       end
 
       def play_cards(_, cards:)
-        previous_cards = @table[previous_player]
+        previous_cards = @table[@previous_player]
 
         Move.validate!(previous_cards, cards)
 

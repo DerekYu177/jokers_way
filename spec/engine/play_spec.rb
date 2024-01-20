@@ -4,12 +4,19 @@ require 'spec_helper'
 
 RSpec.describe(JokersWay::Engine::Play) do
   let(:play) { described_class.new(players) }
-  let(:players) do
-    JokersWay::Settings.player_names.map { |name| JokersWay::Engine::Player.new(name) }
-  end
+  let(:players) { build_players }
 
   describe '#play' do
-    subject { play.play(play.current_player, cards: []) } 
+    subject do
+      current_player = players.find do |player| 
+        player.id == play.current_player
+      end
+      
+      play.play_cards(
+        play.current_player, 
+        cards: [current_player.cards.first],
+      )
+    end
 
     it 'changes the player' do
       expect { subject }.to(change { play.current_player })

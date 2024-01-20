@@ -58,7 +58,12 @@ RSpec.describe(JokersWay::Engine::Game) do
         let(:team1) { game.state.offensive[:player_ids] }
         let(:team2) { game.state.defensive[:player_ids] }
 
-        subject { game.turn(id: 1, action: :play) }
+        subject do
+          current_player = game.find_player(game.current_player)
+          card_to_play = current_player.cards.first 
+
+          game.turn(id: 1, action: :play, cards: [card_to_play])
+        end
 
         it 'updates the state with the conclusion' do
           # we expect team2 to gain the initiative

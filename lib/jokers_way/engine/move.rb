@@ -17,18 +17,22 @@ module JokersWay
       end
 
       def validate!
-        raise HandSizeMismatchError.new(previous, current) unless previous.size == current.size
-
-        case current.size
-        when 1, 2, 3
-          OneToThreeCardsMove.new(current).validate!
-        when 4
-          raise FourCardsError
-        when 5
-          FiveCardsMove.new(current).validate!
+        if previous.present? && previous.size != current.size
+          raise HandSizeMismatchError.new(previous, current) 
         end
 
+        move = case current.size
+        when 1, 2, 3
+          OneToThreeCardMove.new(previous, current)
+        when 4
+          raise FourCardsError.new(previous, current)
+        when 5
+          FiveCardMove.new(previous, current)
+        else
+          raise IllegalNCardsError.new(previous, current)
+        end
 
+        move.validate!
       end
 
       private

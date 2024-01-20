@@ -28,5 +28,11 @@ module JokersWay
 
     class HandSizeMismatchError < AbstractMoveError; end
     class UnequalRanksError < AbstractMoveError; end
+    class FourCardsError < AbstractMoveError; end
+    class IllegalNCardsError < AbstractMoveError
+      def message
+        "played #{@current.size} number of cards"
+      end
+    end
   end
 end

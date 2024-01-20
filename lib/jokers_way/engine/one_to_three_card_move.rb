@@ -20,6 +20,12 @@ module JokersWay
 
         true
       end
+
+      private
+
+      def equivalent_ranks?
+        current.map(&:current_rank).uniq.size == 1
+      end
     end
   end
 end
