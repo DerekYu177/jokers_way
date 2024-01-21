@@ -13,6 +13,10 @@ module JokersWay
         @name = name
         @cards = []
       end
+
+      def delete_cards!(cards_to_delete)
+        @cards -= cards_to_delete
+      end
     end
   end
 end

@@ -13,7 +13,7 @@ RSpec.describe(JokersWay::Engine::Play) do
       end
       
       play.play_cards(
-        play.current_player, 
+        current_player, 
         cards: [current_player.cards.first],
       )
     end

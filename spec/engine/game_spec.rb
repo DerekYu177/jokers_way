@@ -42,7 +42,7 @@ RSpec.describe(JokersWay::Engine::Game) do
 
           game.turn(id: game.current_player, action: :play, cards: [card_to_play])
 
-          expect(current_player.cards.find(card_to_play)).to(be_nil)
+          expect(current_player.cards.find { |card| card == card_to_play }).to(be_nil)
         end
       end
 

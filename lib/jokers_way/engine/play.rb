@@ -21,13 +21,14 @@ module JokersWay
         @current_player = table.keys.first
       end
 
-      def play_cards(_, cards:)
+      def play_cards(player, cards:)
         previous_cards = @table[@previous_player]
 
         Move.validate!(previous_cards, cards)
 
         @table[current_player] = cards
 
+        player.delete_cards!(cards)
         complete_turn
       end
 
