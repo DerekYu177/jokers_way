@@ -39,9 +39,9 @@ module JokersWay
         end
       end
 
-      def each_player(players, &block)
+      def each_player(players, &)
         cards_per_user = @cards.each_slice(CARDS_PER_HAND).to_a
-        players.zip(cards_per_user, &block)
+        players.zip(cards_per_user, &)
       end
     end
   end

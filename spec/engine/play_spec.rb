@@ -8,12 +8,12 @@ RSpec.describe(JokersWay::Engine::Play) do
 
   describe '#play' do
     subject do
-      current_player = players.find do |player| 
+      current_player = players.find do |player|
         player.id == play.current_player
       end
-      
+
       play.play_cards(
-        current_player, 
+        current_player,
         cards: [current_player.cards.first],
       )
     end

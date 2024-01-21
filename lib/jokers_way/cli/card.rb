@@ -9,32 +9,27 @@ module JokersWay
         def pop!(shorthand, hand:)
           shorthand = shorthand.dup.upcase
 
-          card = nil
-          rank = nil
-
           rank, suit = split(shorthand)
 
-          Engine::Card.pop!(hand, rank: rank, suit: suit)
-        rescue Engine::CardNotFoundInHand => ex
-          raise CLI::CardNotFoundInHand.new(shorthand)
+          Engine::Card.pop!(hand, rank:, suit:)
+        rescue Engine::CardNotFoundInHand => _e
+          raise CLI::CardNotFoundInHand, shorthand
         end
 
         private
 
         def split(shorthand)
           rank = shorthand.match(/\d+/).to_s
-          suit = shorthand.delete(rank) 
+          suit_shorthand = shorthand.delete(rank)
 
-          suit = case suit
-          when 'D'
-            'Diamonds'
-          when 'C'
-            'Clubs'
-          when 'H'
-            'Hearts'
-          when 'S'
-            'Spades'
-          end
+          lookup = {
+            'D' => 'Diamonds',
+            'C' => 'Clubs',
+            'H' => 'Hearts',
+            'S' => 'Spades',
+          }
+
+          suit = lookup[suit_shorthand]
 
           [rank.to_i, suit]
         end
@@ -77,7 +72,7 @@ module JokersWay
         if card.joker?
           card.current_rank
         else
-          [card.current_rank, card.current_suit[0]].join('')
+          [card.current_rank, card.current_suit[0]].join
         end
       end
     end

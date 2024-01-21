@@ -56,12 +56,12 @@ module JokersWay
 
       def play_cards(player, cards:)
         # first, make sure that the cards that are played are valid
-        @play.play_cards(player, cards: cards)
+        @play.play_cards(player, cards:)
 
-        # ensure that cards 
+        # ensure that cards
         # are popped from the hand
-        # this may seem excessive 
-        # because we already did it when we fetched the hand, 
+        # this may seem excessive
+        # because we already did it when we fetched the hand,
         # but this would be where the hand is accepted
       end
 

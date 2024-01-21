@@ -15,6 +15,6 @@ module JokersWay
       end
     end
 
-    ERRORS = [CardNotFoundInHand]
+    ERRORS = [CardNotFoundInHand].freeze
   end
 end

@@ -17,8 +17,14 @@ module JokersWay
         end
       end
 
-      def method_missing(*args, **kwargs, &block)
-        instance.public_send(*args, **kwargs, &block)
+      def method_missing(...)
+        instance.public_send(...)
+      end
+
+      private
+
+      def respond_to_missing?
+        true
       end
     end
 

@@ -3,14 +3,14 @@
 require 'spec_helper'
 
 RSpec.describe(JokersWay::Engine::OneToThreeCardMove) do
-  let(:current) { build_cards("10H") }
+  let(:current) { build_cards('10H') }
   let(:previous) { [] }
 
   describe '#validate!' do
     subject { described_class.validate!(previous, current) }
 
     context 'when not all cards are of equal ranks' do
-      let(:current) { build_cards("2H", "2C", "3S") }
+      let(:current) { build_cards('2H', '2C', '3S') }
 
       it { expect { subject }.to(raise_error(JokersWay::Engine::UnequalRanksError)) }
     end
@@ -18,9 +18,9 @@ RSpec.describe(JokersWay::Engine::OneToThreeCardMove) do
     context 'when there is one joker' do
       let(:current) do
         [
-          build(:card, shorthand: "16"),
-          build(:card, shorthand: "2H"),
-          build(:card, shorthand: "2C"),
+          build(:card, shorthand: '16'),
+          build(:card, shorthand: '2H'),
+          build(:card, shorthand: '2C'),
         ]
       end
 

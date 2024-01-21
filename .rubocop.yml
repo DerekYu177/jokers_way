@@ -1,5 +1,15 @@
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
 Layout/FirstArgumentIndentation:
   EnforcedStyle: consistent
+
+Layout/IndentationStyle:
+  EnforcedStyle: spaces
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
@@ -16,6 +26,12 @@ Style/Documentation:
 Metrics/MethodLength:
   Enabled: false
 
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: consistent_comma
 
@@ -24,4 +40,3 @@ Style/TrailingCommaInArrayLiteral:
 
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
-

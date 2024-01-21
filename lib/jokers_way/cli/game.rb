@@ -22,7 +22,7 @@ module JokersWay
 
           turn(current_player, action:, **info)
         end
-      rescue [*CLI::ERRORS, *Engine::ERRORS] => e
+      rescue StandardError => e
         handle!(e) ? retry : raise
       rescue Interrupt
         puts
@@ -32,23 +32,24 @@ module JokersWay
       private
 
       def parse_action(input)
-        if input == '?'
+        case input
+        when '?'
           [:hand, {}]
-        elsif input == 'q'
+        when 'q'
           [:quit, {}]
-        elsif input == 's'
+        when 's'
           [:skip, {}]
         else
-          [:play, cards: parse_cards(input)]
+          [:play, { cards: parse_cards(input) }]
         end
       end
 
-      def turn(id, action:, **kwargs)
+      def turn(id, action:, **)
         case action
         when :hand
           hand
         when :skip, :play
-          @game.turn(id: id, action:, **kwargs)
+          @game.turn(id:, action:, **)
         when :quit
           raise Interrupt
         end
@@ -59,7 +60,7 @@ module JokersWay
 
         human_readable_hand = hand
           .sort_by(&:current_rank)
-          .map do |card| 
+          .map do |card|
             c = CLI::Card.new(card)
             "#{c.inspect}\t\t#{c.shorthand}"
           end
@@ -70,11 +71,11 @@ module JokersWay
       def parse_cards(str)
         player = @game.find_player(current_player)
 
-        shorthands = str.split(" ")
+        shorthands = str.split
         cards = player.cards.dup
 
         shorthands.map do |shorthand|
-          CLI::Card.pop!(shorthand, hand: cards) 
+          CLI::Card.pop!(shorthand, hand: cards)
         end
       end
 
@@ -83,18 +84,6 @@ module JokersWay
           "\ts to skip your turn\n" \
           "\tq to quit\n" \
           "\tType the shorthand for your card to play it\n"
-      end
-
-      def cannot_skip!
-        emphasis!("You cannot skip on your first turn!")
-      end
-
-      def card_not_found_in_hand!(shorthand)
-        emphasis!("Could not find the card that you played: #{shorthand}")
-      end
-
-      def emphasis!(str)
-        puts "#{'-' * 10}\t #{str} \t#{'-' * 10}"
       end
 
       def current_player

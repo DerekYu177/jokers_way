@@ -5,17 +5,16 @@ module JokersWay
     class ErrorHandling
       class << self
         def handle!(error)
-          case error  
+          case error
           when Engine::CannotSkipError
-            emphasis!("You cannot skip on your first turn!")
-            true
+            emphasis!('You cannot skip on your first turn!')
           when CLI::CardNotFoundInHand
             emphasis!("Could not find the card that you played: #{shorthand}")
-            true
           else
             emphasis!("Unhandled Error: #{error}")
-            true
           end
+
+          true
         end
 
         private

@@ -3,8 +3,8 @@
 FactoryBot.define do
   factory :card, class: JokersWay::Engine::Card do
     initialize_with do
-      rank, suit = JokersWay::CLI::Card.send(:split, shorthand)  
-      new(rank, suit: suit) 
+      rank, suit = JokersWay::CLI::Card.send(:split, shorthand)
+      new(rank, suit:)
     end
   end
 end

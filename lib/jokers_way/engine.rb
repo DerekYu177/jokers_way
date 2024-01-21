@@ -14,8 +14,6 @@ require_relative 'engine/five_card_move'
 
 module JokersWay
   module Engine
-    # runs game
-
     class CannotSkipError < StandardError; end
     class CardNotFoundInHand < StandardError; end
 
@@ -23,17 +21,21 @@ module JokersWay
       def initialize(previous, current)
         @previous = previous
         @current = current
+
+        super
       end
     end
 
     class HandSizeMismatchError < AbstractMoveError; end
     class UnequalRanksError < AbstractMoveError; end
     class FourCardsError < AbstractMoveError; end
+
     class IllegalNCardsError < AbstractMoveError
       def message
         "played #{@current.size} number of cards"
       end
     end
+
     class IncorrectPlayerOrderError < StandardError; end
 
     ERRORS = [
@@ -44,6 +46,6 @@ module JokersWay
       FourCardsError,
       IllegalNCardsError,
       IncorrectPlayerOrderError,
-    ]
+    ].freeze
   end
 end

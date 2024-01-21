@@ -23,11 +23,13 @@ module JokersWay
 
       class << self
         def pop!(cards, rank:, suit: nil)
-          card = cards.find { |card| card.suit == suit && card.rank == rank }
+          found_card = cards.find do |card|
+            card.suit == suit && card.rank == rank
+          end
 
-          raise CardNotFoundInHand unless card
+          raise CardNotFoundInHand unless found_card
 
-          cards.delete_at(cards.index(card))
+          cards.delete_at(cards.index(found_card))
         end
       end
 

@@ -5,7 +5,7 @@ module JokersWay
     class OneToThreeCardMove < Move
       def validate!
         # all cards must be the same rank
-        jokers, regular = split(current)
+        jokers, _regular = split(current)
 
         if jokers.any?
           # jokers must adhere to the card with the lowest rank

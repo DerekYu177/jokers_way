@@ -4,7 +4,7 @@ module JokersWay
   module Engine
     class FiveCardMove < Move
       # pattern values
-      # a higher pattern value is absolutely 
+      # a higher pattern value is absolutely
       # greater than one of lower value
       # regardless of the differences in pattern rank
       FLUSH = 1
@@ -38,26 +38,23 @@ module JokersWay
         return STRAIGHT if straight?
         return FLUSH if flush?
 
-        # raise InvalidPokerHand.new(nil, current)
         nil
       end
 
       def pattern_rank
         case pattern_value
-        when FIVE_OF_A_KIND
+        when FIVE_OF_A_KIND, STRAIGHT_FLUSH
           current.map(&:current_rank).min
-        when STRAIGHT_FLUSH
-          current.map(&:current_rank).min
-        when FOUR_OF_A_KIND
-          major_group_rank(current)
-        when FULL_HOUSE
+        when FOUR_OF_A_KIND, FULL_HOUSE
           major_group_rank(current)
         when STRAIGHT
+          # TODO
         when FLUSH
+          # TODO
         end
       end
 
-      def five_of_a_kind? 
+      def five_of_a_kind?
         convert_jokers(rank: current.map(&:current_rank).min) do
           group_of(5)
         end
@@ -83,8 +80,7 @@ module JokersWay
         consecutive?(current)
       end
 
-      def flush?
-      end
+      def flush?; end
 
       def consecutive?(cards)
         cards.map(&:current_rank).sort.each_cons(2).all? { |a, b| b == a + 1 }
@@ -94,20 +90,26 @@ module JokersWay
         big, small = current.group_by(&:current_rank).values
         return false unless big.size == size
         return false unless big.map(&:current_rank).uniq.size == 1
-        return false if small && !(small.map(&:current_rank).uniq.size == 1)
+        return false if small && (small.map(&:current_rank).uniq.size != 1)
 
         true
       end
 
       def major_group_rank(cards)
-        grouped(cards, jokers: false).first.first || 
+        grouped(cards, jokers: false).first.first ||
           grouped(cards, jokers: true).first.first
       end
 
       def grouped(cards, jokers:)
         cards
           .map(&:current_rank)  # [12, 12, 12, 12, 2]
-          .tap { |ranks| ranks.reject! { |rank| JokersWay::Engine::Card::JOKER_CARD_RANKS.include?(rank) } unless jokers }
+          .tap do |ranks|
+          unless jokers
+            ranks.reject! do |rank|
+              JokersWay::Engine::Card::JOKER_CARD_RANKS.include?(rank)
+            end
+          end
+        end
           .group_by(&:itself)   # { 12 => [12, 12, 12, 12], 2 => [2] }
           .values               # [[12, 12, 12, 12], [2]]
           .sort                 # [[2], [12, 12, 12, 12]]
@@ -115,7 +117,7 @@ module JokersWay
       end
 
       def convert_jokers(rank: nil, suit: nil)
-        jokers, regular = split(current)
+        jokers, _regular = split(current)
 
         jokers.each do |joker|
           joker.current_rank = rank if rank

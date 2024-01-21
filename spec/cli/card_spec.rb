@@ -4,11 +4,11 @@ require 'spec_helper'
 
 RSpec.describe(JokersWay::CLI::Card) do
   describe '.pop!' do
-    subject { described_class.pop!(shorthand, hand: hand) }
+    subject { described_class.pop!(shorthand, hand:) }
 
     context 'when shorthand cannot be found in hand' do
       let(:hand) { [JokersWay::Engine::Card.new(13, suit: 'Clubs')] }
-      let(:shorthand) { "13" }
+      let(:shorthand) { '13' }
 
       it 'raises' do
         expect { subject }.to(raise_error(JokersWay::CLI::CardNotFoundInHand, shorthand))
@@ -17,7 +17,7 @@ RSpec.describe(JokersWay::CLI::Card) do
 
     context 'jokers can be found without a suit' do
       let(:hand) { [JokersWay::Engine::Card.new(17)] }
-      let(:shorthand) { "17" }
+      let(:shorthand) { '17' }
 
       it do
         card = subject

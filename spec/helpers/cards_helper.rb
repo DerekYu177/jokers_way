@@ -4,7 +4,7 @@ module Helpers
   module CardsHelper
     def build_cards(*shorthands)
       shorthands.map do |shorthand|
-        build(:card, shorthand: shorthand)
+        build(:card, shorthand:)
       end
     end
   end
