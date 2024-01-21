@@ -17,7 +17,7 @@ module JokersWay
       end
 
       def validate!
-        if previous.present? && previous.size != current.size
+        if previous && previous.size != current.size
           raise HandSizeMismatchError.new(previous, current) 
         end
 

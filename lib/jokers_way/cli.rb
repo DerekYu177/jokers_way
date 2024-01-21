@@ -2,6 +2,7 @@
 
 require_relative 'cli/game'
 require_relative 'cli/card'
+require_relative 'cli/error_handling'
 
 module JokersWay
   module CLI
@@ -13,5 +14,7 @@ module JokersWay
         super
       end
     end
+
+    ERRORS = [CardNotFoundInHand]
   end
 end

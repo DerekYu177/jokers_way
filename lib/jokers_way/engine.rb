@@ -34,5 +34,14 @@ module JokersWay
         "played #{@current.size} number of cards"
       end
     end
+
+    ERRORS = [
+      CannotSkipError,
+      CardNotFoundInHand,
+      HandSizeMismatchError,
+      UnequalRanksError,
+      FourCardsError,
+      IllegalNCardsError,
+    ]
   end
 end

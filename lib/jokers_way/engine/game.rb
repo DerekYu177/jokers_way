@@ -54,8 +54,8 @@ module JokersWay
         @round.play.current_player
       end
 
-      def turn(...)
-        @round.turn(...)
+      def turn(**kwargs)
+        @round.turn(**kwargs)
 
         return unless @round.finished?
 

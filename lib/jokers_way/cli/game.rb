@@ -22,12 +22,8 @@ module JokersWay
 
           turn(current_player, action:, **info)
         end
-      rescue Engine::CannotSkipError
-        cannot_skip!
-        retry
-      rescue CLI::CardNotFoundInHand => ex
-        card_not_found_in_hand!(ex.shorthand)
-        retry
+      rescue [*CLI::ERRORS, *Engine::ERRORS] => e
+        handle!(e) ? retry : raise
       rescue Interrupt
         puts
         puts 'Exiting, thanks for playing!'
@@ -61,10 +57,12 @@ module JokersWay
       def hand
         hand = @game.find_player(current_player).cards
 
-        human_readable_hand = hand.sort_by(&:current_rank).map do |card| 
-          c = CLI::Card.new(card)
-          "#{c.inspect}\t\t#{c.shorthand}"
-        end
+        human_readable_hand = hand
+          .sort_by(&:current_rank)
+          .map do |card| 
+            c = CLI::Card.new(card)
+            "#{c.inspect}\t\t#{c.shorthand}"
+          end
 
         puts human_readable_hand
       end
