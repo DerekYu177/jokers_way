@@ -44,7 +44,8 @@ RSpec.describe(JokersWay::Engine::Round) do
 
     describe 'skip' do
       it 'cannot skip when first turn' do
-        expect { round.turn(id: 1, action: :skip) }.to(raise_error(JokersWay::Engine::CannotSkipError))
+        expect { round.turn(player: players.first, action: :skip) }
+          .to(raise_error(JokersWay::Engine::CannotSkipError))
       end
     end
   end

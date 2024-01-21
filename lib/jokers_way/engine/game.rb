@@ -55,6 +55,11 @@ module JokersWay
       end
 
       def turn(**kwargs)
+        unless (id = kwargs.delete(:id)) == current_player
+          raise IncorrectPlayerOrderError
+        end
+
+        kwargs[:player] = find_player(id)
         @round.turn(**kwargs)
 
         return unless @round.finished?

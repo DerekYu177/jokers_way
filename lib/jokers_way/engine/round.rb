@@ -26,12 +26,12 @@ module JokersWay
         @play = Play.new(players)
       end
 
-      def turn(id:, action:, **kwargs)
+      def turn(player:, action:, **kwargs)
         case action
         when :play
-          play_cards(id, cards: [*kwargs.delete(:cards)])
+          play_cards(player, cards: [*kwargs.delete(:cards)])
         when :skip
-          skip(id)
+          skip(player)
         else
           raise "unknown action: #{action}"
         end
@@ -54,9 +54,9 @@ module JokersWay
 
       private
 
-      def play_cards(id, cards:)
+      def play_cards(player, cards:)
         # first, make sure that the cards that are played are valid
-        @play.play_cards(id, cards: cards)
+        @play.play_cards(player, cards: cards)
 
         # ensure that cards 
         # are popped from the hand
@@ -65,8 +65,8 @@ module JokersWay
         # but this would be where the hand is accepted
       end
 
-      def skip(id, *, **)
-        @play.skip(id)
+      def skip(player, *, **)
+        @play.skip(player)
       end
     end
   end

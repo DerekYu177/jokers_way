@@ -31,10 +31,10 @@ module JokersWay
         complete_turn
       end
 
-      def skip(player)
+      def skip(_)
         raise CannotSkipError if first_play?
 
-        @table[player] = :skip
+        @table[current_player] = :skip
         complete_turn
       end
 

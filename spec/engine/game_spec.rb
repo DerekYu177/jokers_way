@@ -37,7 +37,6 @@ RSpec.describe(JokersWay::Engine::Game) do
     describe '#turn' do
       context 'when plays a card' do
         it 'plays the card and removes it from the hand of the player' do
-          game # initialize
           current_player = game.find_player(game.current_player)
           card_to_play = current_player.cards.first 
 
@@ -62,7 +61,11 @@ RSpec.describe(JokersWay::Engine::Game) do
           current_player = game.find_player(game.current_player)
           card_to_play = current_player.cards.first 
 
-          game.turn(id: 1, action: :play, cards: [card_to_play])
+          game.turn(
+            id: game.current_player, 
+            action: :play, 
+            cards: [card_to_play],
+          )
         end
 
         it 'updates the state with the conclusion' do

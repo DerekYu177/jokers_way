@@ -34,6 +34,7 @@ module JokersWay
         "played #{@current.size} number of cards"
       end
     end
+    class IncorrectPlayerOrderError < StandardError; end
 
     ERRORS = [
       CannotSkipError,
@@ -42,6 +43,7 @@ module JokersWay
       UnequalRanksError,
       FourCardsError,
       IllegalNCardsError,
+      IncorrectPlayerOrderError,
     ]
   end
 end

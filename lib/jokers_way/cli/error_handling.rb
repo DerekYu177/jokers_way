@@ -12,6 +12,9 @@ module JokersWay
           when CLI::CardNotFoundInHand
             emphasis!("Could not find the card that you played: #{shorthand}")
             true
+          else
+            emphasis!("Unhandled Error: #{error}")
+            true
           end
         end
 
