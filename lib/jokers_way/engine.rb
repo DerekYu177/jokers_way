@@ -28,11 +28,14 @@ module JokersWay
 
     class HandSizeMismatchError < AbstractMoveError; end
     class UnequalRanksError < AbstractMoveError; end
-    class FourCardsError < AbstractMoveError; end
+    class GreaterMoveRequiredError < AbstractMoveError; end
 
     class IllegalNCardsError < AbstractMoveError
       def message
-        "played #{@current.size} number of cards"
+        <<~ERROR.squish
+          played #{@current.size} number of cards
+          whereas you require a hand of either 1, 2, 3, or 5
+        ERROR
       end
     end
 
@@ -43,9 +46,9 @@ module JokersWay
       CardNotFoundInHand,
       HandSizeMismatchError,
       UnequalRanksError,
-      FourCardsError,
       IllegalNCardsError,
       IncorrectPlayerOrderError,
+      GreaterMoveRequiredError,
     ].freeze
   end
 end

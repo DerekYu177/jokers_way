@@ -2,7 +2,7 @@
 
 module JokersWay
   module Engine
-    class FiveCardMove < Move
+    class FiveCardMove
       # pattern values
       # a higher pattern value is absolutely
       # greater than one of lower value
@@ -14,10 +14,12 @@ module JokersWay
       STRAIGHT_FLUSH = 5
       FIVE_OF_A_KIND = 6
 
-      def initialize(...)
+      attr_reader :cards
+
+      def initialize(cards)
         @pattern_value = nil
         @pattern_rank = nil
-        super(...)
+        @cards = cards
       end
 
       def validate!
@@ -44,9 +46,9 @@ module JokersWay
       def pattern_rank
         case pattern_value
         when FIVE_OF_A_KIND, STRAIGHT_FLUSH, STRAIGHT
-          current.map(&:current_rank).min
+          cards.map(&:current_rank).min
         when FOUR_OF_A_KIND, FULL_HOUSE
-          major_group_rank(current)
+          major_group_rank
         when FLUSH
           # there is no way to differentiate between flush ranks
           0
@@ -54,7 +56,7 @@ module JokersWay
       end
 
       def five_of_a_kind?
-        convert_jokers(rank: current.map(&:current_rank).min) do
+        convert_jokers(rank: cards.map(&:current_rank).min) do
           group_of(5)
         end
       end
@@ -64,13 +66,13 @@ module JokersWay
       end
 
       def four_of_a_kind?
-        convert_jokers(rank: major_group_rank(current)) do
+        convert_jokers(rank: major_group_rank) do
           group_of(4)
         end
       end
 
       def full_house?
-        convert_jokers(rank: major_group_rank(current)) do
+        convert_jokers(rank: major_group_rank) do
           group_of(3)
         end
       end
@@ -78,24 +80,24 @@ module JokersWay
       def straight?
         # determine the missing digits
         # and then assign the missing values to jokers
-        _, regular = split(current)
+        _, regular = split
         convert_jokers(rank: missing_cards(regular.map(&:current_rank))) do
-          consecutive?(current)
+          consecutive?
         end
       end
 
       def flush?
-        convert_jokers(suit: current.first.suit) do
-          same_suit?(current)
+        convert_jokers(suit: cards.first.suit) do
+          same_suit?
         end
       end
 
-      def consecutive?(cards)
+      def consecutive?
         cards.map(&:current_rank).sort.each_cons(2).all? { |a, b| b == a + 1 }
       end
 
       def group_of(size)
-        big, small = current.group_by(&:current_rank).values
+        big, small = cards.group_by(&:current_rank).values
         return false unless big.size == size
         return false unless big.map(&:current_rank).uniq.size == 1
         return false if small && (small.map(&:current_rank).uniq.size != 1)
@@ -103,12 +105,12 @@ module JokersWay
         true
       end
 
-      def major_group_rank(cards)
-        grouped(cards, jokers: false).first.first ||
-          grouped(cards, jokers: true).first.first
+      def major_group_rank
+        grouped(jokers: false).first.first ||
+          grouped(jokers: true).first.first
       end
 
-      def grouped(cards, jokers:)
+      def grouped(jokers:)
         cards
           .map(&:current_rank)  # [12, 12, 12, 12, 2]
           .tap do |ranks|
@@ -125,7 +127,7 @@ module JokersWay
       end
 
       def convert_jokers(rank: nil, suit: nil)
-        jokers, _regular = split(current)
+        jokers, _regular = split
 
         ranks = if rank.is_a?(Array)
                   rank
@@ -176,13 +178,17 @@ module JokersWay
           missing.push(*gap)
         end
 
-        determine_missing_digits(input + missing, missing) if missing.size + input.size < 5
+        missing_cards(input + missing, missing) if missing.size + input.size < 5
 
         missing
       end
 
-      def same_suit?(cards)
+      def same_suit?
         cards.map(&:current_suit).uniq.size == 1
+      end
+
+      def split
+        cards.partition(&:joker?)
       end
     end
   end
