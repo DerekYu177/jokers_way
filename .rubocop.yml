@@ -32,6 +32,9 @@ Metrics/CyclomaticComplexity:
 Metrics/ClassLength:
   Enabled: false
 
+Metrics/PerceivedComplexity:
+  Enabled: false
+
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: consistent_comma
 

@@ -43,14 +43,13 @@ module JokersWay
 
       def pattern_rank
         case pattern_value
-        when FIVE_OF_A_KIND, STRAIGHT_FLUSH
+        when FIVE_OF_A_KIND, STRAIGHT_FLUSH, STRAIGHT
           current.map(&:current_rank).min
         when FOUR_OF_A_KIND, FULL_HOUSE
           major_group_rank(current)
-        when STRAIGHT
-          # TODO
         when FLUSH
-          # TODO
+          # there is no way to differentiate between flush ranks
+          0
         end
       end
 
@@ -77,10 +76,19 @@ module JokersWay
       end
 
       def straight?
-        consecutive?(current)
+        # determine the missing digits
+        # and then assign the missing values to jokers
+        _, regular = split(current)
+        convert_jokers(rank: missing_cards(regular.map(&:current_rank))) do
+          consecutive?(current)
+        end
       end
 
-      def flush?; end
+      def flush?
+        convert_jokers(suit: current.first.suit) do
+          same_suit?(current)
+        end
+      end
 
       def consecutive?(cards)
         cards.map(&:current_rank).sort.each_cons(2).all? { |a, b| b == a + 1 }
@@ -119,8 +127,14 @@ module JokersWay
       def convert_jokers(rank: nil, suit: nil)
         jokers, _regular = split(current)
 
-        jokers.each do |joker|
-          joker.current_rank = rank if rank
+        ranks = if rank.is_a?(Array)
+                  rank
+                else
+                  [rank] * jokers.size
+                end
+
+        jokers.zip(ranks).each do |joker, r|
+          joker.current_rank = r if r
           joker.current_suit = suit if suit
         end
 
@@ -134,6 +148,41 @@ module JokersWay
         end
 
         result
+      end
+
+      def missing_cards(input, missing = [])
+        # FUN MINI CHALLENGE:
+        # given an integer array of < 5
+        # provide an output such that output is a consecutive list of five integers from a specified list
+        # specified list = [*2..14]
+
+        input.sort!
+        return missing if input.size == 5
+
+        is_consecutive = ->(arr) { arr.sort.each_cons(2).all? { |a, b| b == a + 1 } }
+
+        if is_consecutive.call(input)
+          lowest_value = input.first
+          highest_value = input.last
+
+          missing << if highest_value == JokersWay::Engine::Card::SUIT_CARD_RANKS.last
+                       lowest_value - 1
+                     else
+                       highest_value + 1
+                     end
+        else
+          normalized_input = input.map { |i| i - input.first }
+          gap = ([*0..4] - normalized_input).map { |i| i + input.first }
+          missing.push(*gap)
+        end
+
+        determine_missing_digits(input + missing, missing) if missing.size + input.size < 5
+
+        missing
+      end
+
+      def same_suit?(cards)
+        cards.map(&:current_suit).uniq.size == 1
       end
     end
   end

@@ -89,10 +89,29 @@ RSpec.describe(JokersWay::Engine::FiveCardMove) do
     context('straight') do
       let(:current) { build_cards('2H', '3H', '4S', '5H', '6C') }
       it { expect(pattern_value).to(eq(described_class::STRAIGHT)) }
+
+      context('with one joker') do
+        let(:current) { build_cards('2H', '3H', '17', '5H', '6C') }
+        it { expect(pattern_value).to(eq(described_class::STRAIGHT)) }
+        it { expect(pattern_rank).to(eq(2)) }
+      end
     end
 
     context('flush') do
-      # TODO
+      let(:current) { build_cards('2H', '3H', '5H', '6H', '7H') }
+      it { expect(pattern_value).to(eq(described_class::FLUSH)) }
+
+      context('with one joker') do
+        let(:current) { build_cards('2H', '3H', '17', '6H', '7H') }
+        it { expect(pattern_value).to(eq(described_class::FLUSH)) }
+        it { expect(pattern_rank).to(eq(0)) }
+      end
+
+      context('with two jokers') do
+        let(:current) { build_cards('2H', '16', '17', '6H', '7H') }
+        it { expect(pattern_value).to(eq(described_class::FLUSH)) }
+        it { expect(pattern_rank).to(eq(0)) }
+      end
     end
   end
 end

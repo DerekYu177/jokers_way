@@ -22,7 +22,7 @@ module JokersWay
         @previous = previous
         @current = current
 
-        super
+        super()
       end
     end
 
