@@ -3,7 +3,7 @@
 module JokersWay
   module Engine
     class State
-      attr_reader :starting_player
+      attr_reader :starting_player, :players
 
       def initialize(players:, starting_player:)
         @players = players

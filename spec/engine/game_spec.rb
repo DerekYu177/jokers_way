@@ -99,6 +99,19 @@ RSpec.describe(JokersWay::Engine::Game) do
           expect(team2.score).to(eq(2))
           expect(team1.score).to(eq(2))
         end
+
+        it 'restarts the round' do
+          expect { subject }.to(change { game.round })
+
+          new_round = game.round
+          new_round.state.players.each do |player|
+            expect(player.cards).not_to(be_empty)
+          end
+
+          cards = game.players.map(&:cards).flatten
+          trump_card = cards.find { |card| card.current_rank == JokersWay::Engine::Card::TRUMP_RANK }
+          expect(trump_card.rank).to(eq(2))
+        end
       end
     end
   end
