@@ -50,8 +50,7 @@ module JokersWay
         when FOUR_OF_A_KIND, FULL_HOUSE
           major_group_rank
         when FLUSH
-          # there is no way to differentiate between flush ranks
-          0
+          cards.map(&:current_rank).max
         end
       end
 

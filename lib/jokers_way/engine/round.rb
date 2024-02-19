@@ -8,20 +8,19 @@ module JokersWay
       # a play is concluded where each player has made a move (skip | play a card)
 
       attr_reader :state, :play
-      attr_accessor :succeeded, :jailed
+      attr_accessor :finished
 
       def initialize(players:, state:)
         @state = state
 
-        trump_card_value = state.offensive[:trump_card_value]
+        trump_card_value = state.starting_player.team.score
 
         deck = Deck.build_with(players.count, trump_card_value:)
         deck.each_player(players) do |player, cards|
           player.cards = cards
         end
 
-        @succeeded = []
-        @jailed = []
+        @finished = []
 
         @play = Play.new(players)
       end
@@ -37,32 +36,21 @@ module JokersWay
         end
 
         @play.new_play! if @play.complete?
+
+        # We'll also have to update who the new initiative is
+        return unless player.cards.empty?
+
+        @finished << player
       end
 
       def finished?
-        false
-      end
-
-      def conclusion
-        RoundConclusion
-          .new(
-            state,
-            succeeded: @succeeded,
-            jailed: @jailed,
-          )
+        @state.finished?
       end
 
       private
 
       def play_cards(player, cards:)
-        # first, make sure that the cards that are played are valid
         @play.play_cards(player, cards:)
-
-        # ensure that cards
-        # are popped from the hand
-        # this may seem excessive
-        # because we already did it when we fetched the hand,
-        # but this would be where the hand is accepted
       end
 
       def skip(player, *, **)

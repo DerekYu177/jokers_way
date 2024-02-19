@@ -122,13 +122,13 @@ RSpec.describe(JokersWay::Engine::FiveCardMove) do
       context('with one joker') do
         let(:cards) { build_cards('2H', '3H', '17', '6H', '7H') }
         it { expect(pattern_value).to(eq(described_class::FLUSH)) }
-        it { expect(pattern_rank).to(eq(0)) }
+        it { expect(pattern_rank).to(eq(17)) }
       end
 
       context('with two jokers') do
         let(:cards) { build_cards('2H', '16', '17', '6H', '7H') }
         it { expect(pattern_value).to(eq(described_class::FLUSH)) }
-        it { expect(pattern_rank).to(eq(0)) }
+        it { expect(pattern_rank).to(eq(17)) }
       end
     end
   end

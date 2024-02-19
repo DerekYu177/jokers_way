@@ -6,21 +6,25 @@ RSpec.describe(JokersWay::Engine::Round) do
   let(:players) { JokersWay::Settings.player_names.map { JokersWay::Engine::Player.new(_1) } }
   let(:state) do
     JokersWay::Engine::State.new(
-      offensive: {
-        trump_card_value: 3,
-        starting_player: SecureRandom.uuid,
-        player_ids: [1, 2, 3],
-      },
-      defensive: {
-        trump_card_value: 2,
-        starting_player: nil,
-        player_ids: [4, 5, 6],
-      },
+      players:,
+      starting_player: players.first,
     )
+  end
+
+  let(:trump_card_value) { 2 }
+
+  before do
+    JokersWay::Engine::Team.distribute!(players) do |teams|
+      teams.each do |team|
+        team.score = trump_card_value
+      end
+    end
   end
 
   describe '.new' do
     subject { described_class.new(players:, state:) }
+
+    let(:trump_card_value) { 3 }
 
     it 'sets the trump card value to the team with the initiative' do
       subject

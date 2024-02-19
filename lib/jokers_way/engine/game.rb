@@ -24,23 +24,15 @@ module JokersWay
           Player.new(name)
         end
 
-        @teams = @players.shuffle!
-        @teams = [@teams[...(@teams.count / 2)], @teams[(@teams.count / 2)..]]
-        offensive, defensive = @teams
-
-        @players = offensive.zip(defensive).flatten # interleave teams
+        @players = Team.distribute!(@players) do |teams|
+          teams.each do |team|
+            team.score = 2
+          end
+        end
 
         @state = State.new(
-          offensive: {
-            player_ids: offensive.map(&:id),
-            trump_card_value: 2,
-            starting_player: offensive.first.id,
-          },
-          defensive: {
-            player_ids: defensive.map(&:id),
-            trump_card_value: 2,
-            starting_player: nil,
-          },
+          players: @players,
+          starting_player: @players.first,
         )
 
         @round = Round.new(players: @players, state: @state)
@@ -66,8 +58,7 @@ module JokersWay
 
         # get the list of players who finished playing their hand, in order
         # then get the list of players who were jailed
-        conclusion = @round.conclusion
-        @state.new_round!(conclusion.updated_state)
+        state.update_with(@round)
 
         @round = Round.new(players: @players, state: @state)
       end

@@ -3,18 +3,35 @@
 module JokersWay
   module Engine
     class State
-      attr_accessor :offensive, :defensive
+      attr_reader :starting_player
 
-      def initialize(offensive:, defensive:)
-        @offensive = offensive
-        @defensive = defensive
+      def initialize(players:, starting_player:)
+        @players = players
+        @starting_player = starting_player
       end
 
-      def new_round!(state)
-        @offensive.merge!(state[:offensive])
-        @defensive.merge!(state[:defensive])
+      def update_with(round)
+        dragon_head = round.finished.first
 
-        nil
+        jailed = @players - round.finished
+
+        max_jailed = jailed.count == 3
+        dragon_head_from_winning_team = dragon_head.team == starting_player.team
+
+        starting_player.team.score += if dragon_head_from_winning_team && max_jailed
+                                        2
+                                      elsif dragon_head_from_winning_team || max_jailed
+                                        1
+                                      else
+                                        0
+                                      end
+
+        @starting_player = dragon_head
+      end
+
+      def finished?
+        starting_player.team.players.all? { |player| player.cards.empty? } ||
+          starting_player.team.other.players.all? { |player| player.cards.empty? }
       end
     end
   end
