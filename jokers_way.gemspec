@@ -13,7 +13,9 @@ Gem::Specification.new do |s|
   s.email         = 'derek-nis@hotmail.com'
   s.files = Dir.chdir(__dir__) do
     `git ls-files -z`.split("\x0").reject do |f|
-      (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
+      (f == __FILE__) ||
+        f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)}) ||
+        f.match(/\.gem\z/)
     end
   end
   s.homepage      = 'https://github.com/DerekYu177/JokersWay'
