@@ -33,6 +33,10 @@ module JokersWay
         starting_player.team.players.all? { |player| player.cards.empty? } ||
           starting_player.team.other.players.all? { |player| player.cards.empty? }
       end
+
+      def game_finished?
+        starting_player.team.score > Settings.winning_trump_card_value
+      end
     end
   end
 end

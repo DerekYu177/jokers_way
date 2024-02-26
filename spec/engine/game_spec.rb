@@ -52,7 +52,7 @@ RSpec.describe(JokersWay::Engine::Game) do
         end
       end
 
-      context 'when finished?' do
+      context 'when round is finished?' do
         before do
           # team1 has players (1, 2, 3), player (1) escaped, player (2, 3) remaining
           # team2 has players (4, 5, 6), player (4) received the dragon's head. player (5) escaped

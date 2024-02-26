@@ -41,6 +41,8 @@ module JokersWay
 
     class IncorrectPlayerOrderError < StandardError; end
 
+    class GameFinished < StandardError; end
+
     ERRORS = [
       CannotSkipError,
       CardNotFoundInHand,

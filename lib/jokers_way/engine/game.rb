@@ -60,6 +60,8 @@ module JokersWay
         # then get the list of players who were jailed
         state.update_with(@round)
 
+        raise GameFinished if state.game_finished?
+
         @round = Round.new(players: @players, state: @state)
       end
     end
